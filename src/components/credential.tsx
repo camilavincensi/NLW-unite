@@ -1,7 +1,18 @@
 import {Image, ImageBackground, Text, TouchableOpacity, View} from "react-native";
+import {Feather} from "@expo/vector-icons";
+import {colors} from "@/styles/colors";
+import {QRCode} from "@/components/qrcode";
 
-export function Credencial () {
+
+type Props = {
+    image?: string,
+    onChangeAvatar?: () => void
+    onShowQRCode?: () => void
+}
+
+export function Credencial ({onChangeAvatar, onShowQRCode, image} : Props) {
     return (
+
         <View className={"w-full self-stretch items-center"}>
             <Image
                 source={require("@/assets/ticket/band.png")}
@@ -18,13 +29,24 @@ export function Credencial () {
                     <View className={"w-40 h-40 bg-black rounded-full"}/>
                 </ImageBackground>
 
-                <Image source={{uri: "https://github.com/camilavincensi.png"}} className={"w-36 h-36 rounded-full -mt-24"}/>
+                {image ?(
+                    <TouchableOpacity activeOpacity={0.9} onPress={onChangeAvatar}>
+                        <Image source={{uri: image}}
+                               className={"w-36 h-36 rounded-full -mt-24"}
+                        />
+                    </TouchableOpacity>
+
+                    ) : (
+                        <TouchableOpacity activeOpacity={0.9} className={"w-40 h-40 rounded-full -mt-24 bg-gray-400 items-center justify-center"} onPress={onChangeAvatar}>
+                            <Feather name={"camera"} color={colors.green[400]} size={32}/>
+                        </TouchableOpacity>
+                       )}
                 <Text className={"font-bold text-2xl text-zinc-50 mt-4"}>Camila Vincensi</Text>
                 <Text className={"font-regular text-base text-zinc-300 mb-4"}>camila@gmail.com</Text>
-                <Image source={require("@/assets/ticket/qrcode.png")} className={"w-32 h-32"}/>
 
+                <QRCode value={"teste"} size={120}/>
 
-                <TouchableOpacity activeOpacity={0.7} className={"mt-6"}>
+                <TouchableOpacity activeOpacity={0.7} className={"mt-6"} onPress={onShowQRCode}>
                     <Text className={"font-body text-orange-500 text-sm"}>Ampliar QRCode</Text>
                 </TouchableOpacity>
 
